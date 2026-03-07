@@ -1,1 +1,70 @@
-<p>exam works!</p>
+<div class="exam-container">
+  <div class="exam-header">
+    <h1>{{ examTitle }}</h1>
+    <div class="timer" [class.warning]="timeRemaining < 60">
+      <span class="timer-icon">⏱️</span>
+      <span class="timer-text">{{ formatTime(timeRemaining) }}</span>
+    </div>
+  </div>
+
+  <div class="exam-content">
+    <div class="question-nav">
+      <h3>Questions</h3>
+      <div class="question-buttons">
+        <button 
+          *ngFor="let q of questions; let i = index" 
+          class="question-btn"
+          [class.active]="i === currentQuestionIndex"
+          [class.answered]="selectedAnswers[i] !== -1"
+          (click)="goToQuestion(i)">
+          {{ i + 1 }}
+        </button>
+      </div>
+      <p class="progress-text">{{ answeredCount }} of {{ questions.length }} answered</p>
+    </div>
+
+    <div class="question-panel">
+      <div class="question-header">
+        <span class="question-number">Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</span>
+      </div>
+      
+      <div class="question-content">
+        <h2>{{ questions[currentQuestionIndex].question }}</h2>
+        
+        <div class="options">
+          <div 
+            *ngFor="let option of questions[currentQuestionIndex].options; let i = index"
+            class="option"
+            [class.selected]="selectedAnswers[currentQuestionIndex] === i"
+            (click)="selectAnswer(currentQuestionIndex, i)">
+            <span class="option-letter">{{ ['A', 'B', 'C', 'D'][i] }}</span>
+            <span class="option-text">{{ option }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-actions">
+        <button 
+          class="btn-nav" 
+          (click)="previousQuestion()" 
+          [disabled]="currentQuestionIndex === 0">
+          ← Previous
+        </button>
+        
+        <button 
+          class="btn-nav" 
+          (click)="nextQuestion()" 
+          *ngIf="currentQuestionIndex < questions.length - 1">
+          Next →
+        </button>
+        
+        <button 
+          class="btn-submit" 
+          (click)="submitExam()" 
+          *ngIf="currentQuestionIndex === questions.length - 1">
+          Submit Exam
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

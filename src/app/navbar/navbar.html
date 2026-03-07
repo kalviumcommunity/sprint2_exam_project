@@ -1,1 +1,14 @@
-<p>navbar works!</p>
+<nav class="navbar" *ngIf="showNavbar">
+  <div class="navbar-brand">
+    <a routerLink="/dashboard">Exam Portal</a>
+  </div>
+  
+  <div class="navbar-menu">
+    <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+  </div>
+  
+  <div class="navbar-user">
+    <span class="user-name" *ngIf="isLoggedIn">Welcome, {{ userName }}</span>
+    <button class="btn-logout" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+  </div>
+</nav>
