@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -127,7 +127,7 @@ export class Exam implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router, private ngZone: NgZone) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -175,17 +175,13 @@ export class Exam implements OnInit, OnDestroy {
   }
 
   startTimer() {
-    this.ngZone.runOutsideAngular(() => {
-      this.timerInterval = setInterval(() => {
-        this.ngZone.run(() => {
-          if (this.timeRemaining > 0) {
-            this.timeRemaining--;
-          } else {
-            this.autoSubmit();
-          }
-        });
-      }, 1000);
-    });
+    this.timerInterval = setInterval(() => {
+      if (this.timeRemaining > 0) {
+        this.timeRemaining--;
+      } else {
+        this.autoSubmit();
+      }
+    }, 1000);
   }
 
   formatTime(seconds: number): string {
