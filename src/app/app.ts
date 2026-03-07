@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Navbar } from './navbar/navbar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar, CommonModule],
   template: `
-    <h1>Exam Proctoring System</h1>
+    <app-navbar></app-navbar>
     <router-outlet></router-outlet>
   `,
 })

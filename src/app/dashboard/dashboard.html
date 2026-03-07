@@ -1,1 +1,21 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Welcome, {{ userName }}!</h1>
+    <p>Choose an exam to get started</p>
+  </div>
+
+  <div class="exams-grid">
+    <div class="exam-card" *ngFor="let exam of exams">
+      <div class="exam-header">
+        <h2>{{ exam.title }}</h2>
+        <span class="difficulty" [ngClass]="exam.difficulty.toLowerCase()">{{ exam.difficulty }}</span>
+      </div>
+      <p class="exam-description">{{ exam.description }}</p>
+      <div class="exam-info">
+        <span><strong>Duration:</strong> {{ exam.duration }} mins</span>
+        <span><strong>Questions:</strong> {{ exam.questions }}</span>
+      </div>
+      <button class="btn-start" (click)="startExam(exam)">Start Exam</button>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,42 @@
-<p>result works!</p>
+<div class="result-container">
+  <div class="result-card">
+    <div class="result-header">
+      <h1>Exam Completed!</h1>
+      <p>{{ examTitle }}</p>
+    </div>
+
+    <div class="result-score">
+      <div class="grade-circle" [ngClass]="gradeClass">
+        <span class="grade">{{ grade }}</span>
+      </div>
+      <div class="percentage">{{ percentage }}%</div>
+    </div>
+
+    <div class="result-details">
+      <div class="detail-item">
+        <span class="label">Total Questions</span>
+        <span class="value">{{ totalQuestions }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Correct Answers</span>
+        <span class="value correct">{{ correctAnswers }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Wrong Answers</span>
+        <span class="value wrong">{{ totalQuestions - correctAnswers }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Time Taken</span>
+        <span class="value">{{ timeTaken }}</span>
+      </div>
+    </div>
+
+    <div class="result-message">
+      <p *ngIf="percentage >= 70">Congratulations! You passed the exam!</p>
+      <p *ngIf="percentage < 70 && percentage >= 50">You can do better! Keep practicing.</p>
+      <p *ngIf="percentage < 50">Don't give up! Try again.</p>
+    </div>
+
+    <button class="btn-dashboard" (click)="goToDashboard()">Back to Dashboard</button>
+  </div>
+</div>
