@@ -80,7 +80,7 @@
 }
 
 .question-btn.active {
-  background: #0d9488;
+  background: #1a1a1a;
   color: white;
 }
 
@@ -91,9 +91,9 @@
 }
 
 .question-btn.active.answered {
-  background: #0d9488;
+  background: #1a1a1a;
   color: white;
-  border-color: #0d9488;
+  border-color: #1a1a1a;
 }
 
 .progress-text {
@@ -147,13 +147,13 @@
 }
 
 .option:hover {
-  border-color: #0d9488;
-  background: #f0fdfa;
+  border-color: #333;
+  background: #f9f9f9;
 }
 
 .option.selected {
-  border-color: #0d9488;
-  background: linear-gradient(135deg, rgba(13, 148, 136, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%);
+  border-color: #1a1a1a;
+  background: #f0f0f0;
 }
 
 .option-letter {
@@ -169,7 +169,7 @@
 }
 
 .option.selected .option-letter {
-  background: #0d9488;
+  background: #1a1a1a;
   color: white;
 }
 

@@ -2,6 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+interface QuestionResult {
+  question: string;
+  options: string[];
+  userAnswer: number;
+  correctAnswer: number;
+  isCorrect: boolean;
+}
+
 @Component({
   selector: 'app-result',
   imports: [CommonModule],
@@ -16,6 +24,8 @@ export class Result implements OnInit {
   timeTaken: string = '';
   grade: string = '';
   gradeClass: string = '';
+  questionResults: QuestionResult[] = [];
+  showReview: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -34,6 +44,7 @@ export class Result implements OnInit {
       this.correctAnswers = data.correctAnswers;
       this.percentage = data.percentage;
       this.timeTaken = data.timeTaken;
+      this.questionResults = data.questionResults || [];
       this.calculateGrade();
     } else {
       this.router.navigate(['/dashboard']);
@@ -60,6 +71,10 @@ export class Result implements OnInit {
       this.grade = 'F';
       this.gradeClass = 'grade-f';
     }
+  }
+
+  toggleReview() {
+    this.showReview = !this.showReview;
   }
 
   goToDashboard() {

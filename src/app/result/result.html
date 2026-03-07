@@ -37,6 +37,33 @@
       <p *ngIf="percentage < 50">Don't give up! Try again.</p>
     </div>
 
+    <button class="btn-review" (click)="toggleReview()">
+      {{ showReview ? 'Hide Review' : 'View Answers Review' }}
+    </button>
+
+    <!-- Answer Review Section -->
+    <div class="review-section" *ngIf="showReview">
+      <h2>Answer Review</h2>
+      <div class="question-review" *ngFor="let qr of questionResults; let i = index">
+        <div class="review-header" [class.correct]="qr.isCorrect" [class.wrong]="!qr.isCorrect">
+          <span class="question-number">Question {{ i + 1 }}</span>
+          <span class="result-badge">{{ qr.isCorrect ? '✓ Correct' : '✗ Wrong' }}</span>
+        </div>
+        <p class="review-question">{{ qr.question }}</p>
+        <div class="review-answers">
+          <div *ngFor="let option of qr.options; let j = index" 
+               class="review-option"
+               [class.correct-answer]="j === qr.correctAnswer"
+               [class.user-wrong]="j === qr.userAnswer && !qr.isCorrect">
+            <span class="option-letter">{{ ['A', 'B', 'C', 'D'][j] }}</span>
+            <span class="option-text">{{ option }}</span>
+            <span class="option-indicator" *ngIf="j === qr.correctAnswer">✓ Correct Answer</span>
+            <span class="option-indicator wrong-indicator" *ngIf="j === qr.userAnswer && !qr.isCorrect">Your Answer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="btn-dashboard" (click)="goToDashboard()">Back to Dashboard</button>
   </div>
 </div>

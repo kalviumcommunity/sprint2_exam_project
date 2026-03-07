@@ -226,10 +226,17 @@ export class Exam implements OnInit, OnDestroy {
     clearInterval(this.timerInterval);
 
     let score = 0;
-    this.questions.forEach((q, index) => {
-      if (this.selectedAnswers[index] === q.correctAnswer) {
-        score++;
-      }
+    const questionResults = this.questions.map((q, index) => {
+      const isCorrect = this.selectedAnswers[index] === q.correctAnswer;
+      if (isCorrect) score++;
+      
+      return {
+        question: q.question,
+        options: q.options,
+        userAnswer: this.selectedAnswers[index],
+        correctAnswer: q.correctAnswer,
+        isCorrect: isCorrect
+      };
     });
 
     const result = {
@@ -237,7 +244,8 @@ export class Exam implements OnInit, OnDestroy {
       totalQuestions: this.questions.length,
       correctAnswers: score,
       percentage: Math.round((score / this.questions.length) * 100),
-      timeTaken: this.formatTime((localStorage.getItem('currentExam') ? JSON.parse(localStorage.getItem('currentExam')!).duration * 60 : 600) - this.timeRemaining)
+      timeTaken: this.formatTime((localStorage.getItem('currentExam') ? JSON.parse(localStorage.getItem('currentExam')!).duration * 60 : 600) - this.timeRemaining),
+      questionResults: questionResults
     };
 
     localStorage.setItem('examResult', JSON.stringify(result));

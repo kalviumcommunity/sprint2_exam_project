@@ -7,7 +7,7 @@
 .dashboard-header {
   text-align: center;
   margin-bottom: 48px;
-  color: white;
+  color: #1a1a1a;
 }
 
 .dashboard-header h1 {
@@ -91,7 +91,7 @@
 }
 
 .btn-start {
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: #1a1a1a;
   color: white;
   padding: 14px 28px;
   border-radius: 8px;
@@ -102,5 +102,6 @@
 
 .btn-start:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  background: #000;
 }
