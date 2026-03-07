@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,51 +23,111 @@ export class Exam implements OnInit, OnDestroy {
   timeRemaining: number = 0;
   timerInterval: any;
   isSubmitted: boolean = false;
+  questions: Question[] = [];
 
-  questions: Question[] = [
+  // JavaScript Questions
+  jsQuestions: Question[] = [
     {
       id: 1,
-      question: 'What does HTML stand for?',
-      options: [
-        'Hyper Text Markup Language',
-        'Home Tool Markup Language',
-        'Hyperlinks and Text Markup Language',
-        'Hyperlinking Text Marking Language'
-      ],
-      correctAnswer: 0
+      question: 'Which keyword is used to declare a constant in JavaScript?',
+      options: ['var', 'let', 'const', 'constant'],
+      correctAnswer: 2
     },
     {
       id: 2,
-      question: 'Which of the following is a JavaScript framework?',
-      options: ['Django', 'Angular', 'Flask', 'Laravel'],
+      question: 'What will "typeof null" return in JavaScript?',
+      options: ['null', 'undefined', 'object', 'boolean'],
+      correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: 'Which method adds an element to the end of an array?',
+      options: ['push()', 'pop()', 'shift()', 'unshift()'],
+      correctAnswer: 0
+    },
+    {
+      id: 4,
+      question: 'What is the output of: console.log(2 + "2")?',
+      options: ['4', '22', 'NaN', 'Error'],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: 'Which symbol is used for single-line comments in JavaScript?',
+      options: ['#', '//', '/* */', '--'],
+      correctAnswer: 1
+    }
+  ];
+
+  // Angular Questions
+  angularQuestions: Question[] = [
+    {
+      id: 1,
+      question: 'What decorator is used to define a component in Angular?',
+      options: ['@NgModule', '@Component', '@Injectable', '@Directive'],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: 'Which file contains the root module of an Angular application?',
+      options: ['app.component.ts', 'app.module.ts', 'main.ts', 'index.html'],
       correctAnswer: 1
     },
     {
       id: 3,
-      question: 'What is the correct syntax to declare a variable in JavaScript?',
-      options: ['variable x;', 'var x;', 'v x;', 'declare x;'],
-      correctAnswer: 1
+      question: 'What is used for two-way data binding in Angular?',
+      options: ['{{ }}', '[ ]', '( )', '[( )]'],
+      correctAnswer: 3
     },
     {
       id: 4,
-      question: 'Which CSS property is used to change the text color?',
-      options: ['font-color', 'text-color', 'color', 'foreground-color'],
+      question: 'Which directive is used to loop through items in Angular?',
+      options: ['*ngIf', '*ngFor', '*ngSwitch', '*ngLoop'],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: 'What is the Angular CLI command to create a new component?',
+      options: ['ng new component', 'ng generate component', 'ng create component', 'ng add component'],
+      correctAnswer: 1
+    }
+  ];
+
+  // Web Development Questions
+  webDevQuestions: Question[] = [
+    {
+      id: 1,
+      question: 'What does HTML stand for?',
+      options: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks Text Mark Language', 'Hyper Tool Multi Language'],
+      correctAnswer: 0
+    },
+    {
+      id: 2,
+      question: 'Which CSS property is used to change the background color?',
+      options: ['color', 'bgcolor', 'background-color', 'bg-color'],
+      correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: 'What is the correct HTML element for the largest heading?',
+      options: ['<heading>', '<h6>', '<head>', '<h1>'],
+      correctAnswer: 3
+    },
+    {
+      id: 4,
+      question: 'Which protocol is used for secure communication over the internet?',
+      options: ['HTTP', 'FTP', 'HTTPS', 'SMTP'],
       correctAnswer: 2
     },
     {
       id: 5,
       question: 'What does CSS stand for?',
-      options: [
-        'Creative Style Sheets',
-        'Cascading Style Sheets',
-        'Computer Style Sheets',
-        'Colorful Style Sheets'
-      ],
+      options: ['Creative Style Sheets', 'Cascading Style Sheets', 'Computer Style Sheets', 'Colorful Style Sheets'],
       correctAnswer: 1
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ngZone: NgZone) {}
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -80,14 +140,32 @@ export class Exam implements OnInit, OnDestroy {
     if (currentExam) {
       const exam = JSON.parse(currentExam);
       this.examTitle = exam.title;
-      this.timeRemaining = exam.duration * 60; // Convert minutes to seconds
+      this.timeRemaining = exam.duration * 60;
+      this.loadQuestions(exam.id);
     } else {
-      this.timeRemaining = 10 * 60; // Default 10 minutes
+      this.timeRemaining = 10 * 60;
       this.examTitle = 'General Knowledge Exam';
+      this.questions = this.jsQuestions;
     }
 
     this.selectedAnswers = new Array(this.questions.length).fill(-1);
     this.startTimer();
+  }
+
+  loadQuestions(examId: number) {
+    switch(examId) {
+      case 1:
+        this.questions = this.jsQuestions;
+        break;
+      case 2:
+        this.questions = this.angularQuestions;
+        break;
+      case 3:
+        this.questions = this.webDevQuestions;
+        break;
+      default:
+        this.questions = this.jsQuestions;
+    }
   }
 
   ngOnDestroy() {
@@ -97,13 +175,17 @@ export class Exam implements OnInit, OnDestroy {
   }
 
   startTimer() {
-    this.timerInterval = setInterval(() => {
-      if (this.timeRemaining > 0) {
-        this.timeRemaining--;
-      } else {
-        this.autoSubmit();
-      }
-    }, 1000);
+    this.ngZone.runOutsideAngular(() => {
+      this.timerInterval = setInterval(() => {
+        this.ngZone.run(() => {
+          if (this.timeRemaining > 0) {
+            this.timeRemaining--;
+          } else {
+            this.autoSubmit();
+          }
+        });
+      }, 1000);
+    });
   }
 
   formatTime(seconds: number): string {

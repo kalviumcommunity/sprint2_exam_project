@@ -116,18 +116,18 @@
 .result-message {
   margin-bottom: 32px;
   padding: 16px;
-  background: #f0f9ff;
+  background: #f0fdfa;
   border-radius: 12px;
 }
 
 .result-message p {
-  color: #0369a1;
+  color: #0f766e;
   font-size: 16px;
   font-weight: 500;
 }
 
 .btn-dashboard {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   color: white;
   padding: 16px 32px;
   border-radius: 10px;
@@ -138,5 +138,5 @@
 
 .btn-dashboard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
 }

@@ -13,7 +13,7 @@
 .navbar-brand a {
   font-size: 24px;
   font-weight: 700;
-  color: #667eea;
+  color: #0d9488;
 }
 
 .navbar-menu {
@@ -31,7 +31,7 @@
 
 .nav-link:hover {
   background: #f0f0f0;
-  color: #667eea;
+  color: #0d9488;
 }
 
 .navbar-user {
