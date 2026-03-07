@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -127,7 +127,7 @@ export class Exam implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -178,6 +178,7 @@ export class Exam implements OnInit, OnDestroy {
     this.timerInterval = setInterval(() => {
       if (this.timeRemaining > 0) {
         this.timeRemaining--;
+        this.cdr.detectChanges();
       } else {
         this.autoSubmit();
       }
